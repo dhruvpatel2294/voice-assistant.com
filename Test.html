@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice Assistant
+    </title>
+</head>
+<body style="background-color: aqua;">
+
+    <button class="talk">Talk</button>
+    <h2 class="content"></h2>
+
+    <script>
+        const btn = document.querySelector('.talk');
+        const content = document.querySelector('.content');
+
+     
+        const greetings = [
+            'today is very busy working day '
+     ];
+
+     const YouTube = [
+            'opening youtube sir'
+     ];
+
+     const Google = [
+            'opening google sir'
+     ];
+
+       
+
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const recognition =  new SpeechRecognition();
+
+        recognition.onstart = function(){
+            console.log('How Can I Help You ?')
+        }
+        recognition.onresult = function (event) {
+            const current = event.resultIndex;
+
+            const transcript = event.results[current][0].transcript;
+            content.textContent = transcript;
+            readOutLoud(transcript);
+
+        };
+
+        btn.addEventListener('click', () =>{
+            recognition.start();
+        });
+
+
+        function readOutLoud(message){
+            const speech = new SpeechSynthesisUtterance();
+
+            speech.text = 'i dont know what you said';
+
+
+
+             if(message.includes('how are you')){
+                const finalText = 
+                    greetings[Math.floor(Math.random()*greetings.length)];
+                speech.text = finalText;
+
+             }   
+             if(message.includes('YouTube')){
+                const finalText = 
+                    YouTube[Math.floor(Math.random()*YouTube.length)];
+                speech.text = finalText; 
+                window.open('https://www.youtube.com/')
+             }
+
+             if(message.includes('Google')){
+                const finalText = 
+                    Google[Math.floor(Math.random()*Google.length)];
+                speech.text = finalText; 
+                window.open('https://www.google.com/')
+             }
+
+            speech.volume = 1;
+            speech.rate = 1.1;
+            speech.pitch = 1;
+
+            window.speechSynthesis.speak(speech);
+        }
+    </script>
+    
+</body>
+</html>
